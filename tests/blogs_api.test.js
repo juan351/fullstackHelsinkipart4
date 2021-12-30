@@ -69,6 +69,29 @@ describe('supertest', () => {
     expect(response.body.likes).toBe(0)
     
   })
+
+  test('if properties title or url are not present, then response is 400 Bad Request', async () => {
+    
+    const newBlogWithoutTitle = {
+      author: 'I',
+      url: 'http://localhost',
+      likes: 2
+    }
+    const newBlogWithoutUrl = {
+      title: 'Temp', 
+      author: 'I',
+      likes: 2
+    }
+    await api
+      .post('/api/blogs')
+      .send(newBlogWithoutTitle)
+      .expect(400)
+    await api
+      .post('/api/blogs')
+      .send(newBlogWithoutUrl)
+      .expect(400)
+    
+  })
   
 })
 
