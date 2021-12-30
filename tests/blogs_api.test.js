@@ -95,8 +95,8 @@ describe('supertest', () => {
   
 })
 
-describe('deletion of a note', () => {
-  test('succed with status code 204 if id is valid', async () => {
+describe('deletion of a blog', () => {
+  test('succeeds with status code 204 if id is valid', async () => {
     const blogAtStart = await helper.blogsInDb()
     const blogToDelete = blogAtStart[0]
 
@@ -112,7 +112,6 @@ describe('deletion of a note', () => {
     expect(titles).not.toContain(blogToDelete.title)
   })
 })
-
 
 afterAll(() => {
   mongoose.connection.close()
