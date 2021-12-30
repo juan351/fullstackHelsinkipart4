@@ -5,6 +5,7 @@ const app = require('../app')
 const api = supertest(app)
 
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -110,6 +111,48 @@ describe('deletion of a blog', () => {
 
     const titles = blogsAtEnd.map(b => b.title)
     expect(titles).not.toContain(blogToDelete.title)
+  })
+})
+
+describe('adding invalids users', () => {
+  test('username with less than 3 characters returns 400 Bad Request', async () => {
+    
+    const newUser = {
+      username: 'Us',
+      nombre: 'Juan',
+      password: '31242144'
+    }
+    
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+  })
+  test('password with less than 3 characters returns 400 Bad Request', async () => {
+    
+    const newUser = {
+      username: 'User',
+      nombre: 'Juan',
+      password: '31'
+    }
+    
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+  })
+  test('empty password returns 400 Bad Request', async () => {
+    
+    const newUser = {
+      username: 'User',
+      nombre: 'Juan',
+      password: ''
+    }
+    
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
   })
 })
 
