@@ -53,6 +53,22 @@ describe('supertest', () => {
     const response = await api.get('/api/blogs')
     expect(response.body[0].id).toBeDefined()
   })
+
+  test('if property likes is not present, then its default value is 0', async () => {
+    const newBlog = {
+      title: 'Temp',
+      author: 'I',
+      url: 'http://localhost'
+    }
+    const response = await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+    
+    expect(response.body.likes).toBe(0)
+    
+  })
   
 })
 
