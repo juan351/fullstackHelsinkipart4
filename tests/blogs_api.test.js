@@ -29,7 +29,8 @@ describe('supertest', () => {
     const newBlog = {
       title: 'Temporary title',
       author: 'I',
-      url: 'http://localhost'
+      url: 'http://localhost',
+      likes: 2
     }
 
     await api
