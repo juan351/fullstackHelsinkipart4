@@ -25,8 +25,36 @@ describe('supertest', () => {
         
     expect(response.body).toHaveLength(helper.listWithManyBlogs.length)
   })
+  test('Http POST creates new blog correctly', async () => {
+    const newBlog = {
+      title: 'Temporary title',
+      author: 'I',
+      url: 'http://localhost'
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.listWithManyBlogs.length + 1)
+
+    const titles = blogsAtEnd.map(n => n.title)
+    expect(titles).toContain(
+      'Temporary title'
+    )
+            
+  })
+
+  test('property id is not undefined', async () => {
+    const response = await api.get('/api/blogs')
+    expect(response.body[0].id).toBeDefined()
+  })
   
 })
+
 
 afterAll(() => {
   mongoose.connection.close()
